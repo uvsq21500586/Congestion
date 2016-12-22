@@ -52,7 +52,7 @@ public class Simulator {
 		S[1].getSt().add(Ctest.getAretes().get(1));
 		S[1].getSt().add(Ctest.getAretes().get(2));
 		*/
-		S[0].ajoutarete(Ctest.getAretes().get(0));
+		//S[0].ajoutarete(Ctest.getAretes().get(0));
 		S[1].ajoutarete(Ctest.getAretes().get(1));
 		S[1].ajoutarete(Ctest.getAretes().get(2));
 		Joueur J[]=new Joueur[Njoueurs];
@@ -60,7 +60,7 @@ public class Simulator {
 		
 		//initialisation des joueurs (on les attribue au premier chemin
 		for (int i=0; i<Njoueurs;i++) {
-			J[i]=new Joueur(i);
+			J[i]=new Joueur(i+1);
 			Str[i]=0;
 			for (int j=0; j<S[0].getSt().size();j++) {
 				S[0].getSt().get(j).jincrement();
