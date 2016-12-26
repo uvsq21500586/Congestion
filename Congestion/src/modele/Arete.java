@@ -44,7 +44,7 @@ public class Arete {
 	}
 
 	public double getFcout2(int i) {
-		return fcout[i];
+		return fcout[i-1];
 	}
 	
 	public void setFcout(double[] fcout) {

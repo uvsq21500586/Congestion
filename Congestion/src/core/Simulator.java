@@ -52,11 +52,14 @@ public class Simulator {
 		S[1].getSt().add(Ctest.getAretes().get(1));
 		S[1].getSt().add(Ctest.getAretes().get(2));
 		*/
-		//S[0].ajoutarete(Ctest.getAretes().get(0));
-		S[1].ajoutarete(Ctest.getAretes().get(1));
+		for (int i=0; i<Njoueurs;i++) {
+			S[i]=new Strategie();
+		}
+		S[0].ajoutarete(Ctest.getAretes().get(0));
+		S[1].ajoutarete(Ctest.getAretes().get(2));
 		S[1].ajoutarete(Ctest.getAretes().get(2));
 		Joueur J[]=new Joueur[Njoueurs];
-		int Str[]= new int[Njoueurs]; //chemin choisi par le joueur i 
+		int Str[]= new int[Njoueurs]; //Chemin choisi par le joueur i 
 		
 		//initialisation des joueurs (on les attribue au premier chemin
 		for (int i=0; i<Njoueurs;i++) {
@@ -71,11 +74,11 @@ public class Simulator {
 		double ctotal;
 		for (int i=0;i<Njoueurs;i++) {
 			ctotal=0;
-			for (int j=0; j<S[i].getSt().size(); j++) {
-				if (S[i].getSt().get(j).getCap()>=S[i].getSt().get(j).getPriorite2(i)) {
-					ctotal+=S[i].getSt().get(j).getFcout2(S[i].getSt().get(j).getNbjoueurs());
-				} else if (S[i].getSt().get(j).getNbjoueurs()<=S[i].getSt().get(j).getCap()) {
-					ctotal+=S[i].getSt().get(j).getFcout2(S[i].getSt().get(j).getNbjoueurs());
+			for (int j=0; j<S[Str[i]].getSt().size(); j++) {
+				if (S[Str[i]].getSt().get(j).getCap()>=S[Str[i]].getSt().get(j).getPriorite2(i)) {
+					ctotal+=S[Str[i]].getSt().get(j).getFcout2(S[Str[i]].getSt().get(j).getNbjoueurs());
+				} else if (S[Str[i]].getSt().get(j).getNbjoueurs()<=S[Str[i]].getSt().get(j).getCap()) {
+					ctotal+=S[Str[i]].getSt().get(j).getFcout2(S[Str[i]].getSt().get(j).getNbjoueurs());
 				} else {
 					ctotal=-1; //coût infini
 				}
@@ -84,7 +87,7 @@ public class Simulator {
 		}
 		
 		for (int i=0;i<Njoueurs;i++) {
-			System.out.println("Joueur "+i+1+": cout="+cout[i]);
+			System.out.println("Joueur "+(i+1)+": cout="+cout[i]);
 		}
 	}
 

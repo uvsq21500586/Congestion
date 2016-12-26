@@ -17,6 +17,7 @@ public class Congestion {
 	public ArrayList<Arete> getAretes() {
 		return aretes;
 	}
+	
 
 	public void setAretes(ArrayList<Arete> aretes) {
 		this.aretes = aretes;
