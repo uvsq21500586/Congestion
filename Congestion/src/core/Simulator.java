@@ -10,7 +10,7 @@ public class Simulator {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		int Njoueurs=2;
+		int Njoueurs=3;
 		Congestion Ctest=new Congestion();
 		
 		for (int i=0; i<Ctest.getNoeuds().size();i++) {
@@ -20,7 +20,7 @@ public class Simulator {
 		
 		//fonctions des coûts et priorités des arêtes
 		double fct[][] = {{3,3},{1,2},{1,2}};
-		int prio[][] = {{2,2},{1,1},{1,2}};
+		int prio[][] = {{3,2,1},{1,3,2},{1,2,3}};
 		double cout[]=new double[Njoueurs];
 		for (int i=0;i<Njoueurs;i++){
 			cout[i]=-1;
@@ -48,25 +48,28 @@ public class Simulator {
 		
 		//jeu
 		Strategie S[]=new Strategie[2]; //différents chemins possibles
-		/**S[0].getSt().add(Ctest.getAretes().get(0));
-		S[1].getSt().add(Ctest.getAretes().get(1));
-		S[1].getSt().add(Ctest.getAretes().get(2));
-		*/
-		for (int i=0; i<Njoueurs;i++) {
+		
+		for (int i=0; i<2;i++) {
 			S[i]=new Strategie();
 		}
 		S[0].ajoutarete(Ctest.getAretes().get(0));
 		S[1].ajoutarete(Ctest.getAretes().get(2));
-		S[1].ajoutarete(Ctest.getAretes().get(2));
+		//S[1].ajoutarete(Ctest.getAretes().get(2));
 		Joueur J[]=new Joueur[Njoueurs];
 		int Str[]= new int[Njoueurs]; //Chemin choisi par le joueur i 
 		
 		//initialisation des joueurs (on les attribue au premier chemin
+		Arete a;
 		for (int i=0; i<Njoueurs;i++) {
 			J[i]=new Joueur(i+1);
 			Str[i]=0;
 			for (int j=0; j<S[0].getSt().size();j++) {
-				S[0].getSt().get(j).jincrement();
+				a=S[0].getSt().get(j);
+				if (a.getNbjoueurs()<a.getCap()) {
+					a.jincrement();
+				} else {
+					a.setSurcharge(a.getSurcharge()+1);
+				}
 			}
 		}
 		
@@ -75,10 +78,11 @@ public class Simulator {
 		for (int i=0;i<Njoueurs;i++) {
 			ctotal=0;
 			for (int j=0; j<S[Str[i]].getSt().size(); j++) {
-				if (S[Str[i]].getSt().get(j).getCap()>=S[Str[i]].getSt().get(j).getPriorite2(i)) {
-					ctotal+=S[Str[i]].getSt().get(j).getFcout2(S[Str[i]].getSt().get(j).getNbjoueurs());
-				} else if (S[Str[i]].getSt().get(j).getNbjoueurs()<=S[Str[i]].getSt().get(j).getCap()) {
-					ctotal+=S[Str[i]].getSt().get(j).getFcout2(S[Str[i]].getSt().get(j).getNbjoueurs());
+				a=S[Str[i]].getSt().get(j);
+				if (a.getCap()>=a.getPriorite2(i)) {
+					ctotal+=a.getFcout2(S[Str[i]].getSt().get(j).getNbjoueurs());
+				} else if (a.getSurcharge()==0) {
+					ctotal+=a.getFcout2(a.getNbjoueurs());
 				} else {
 					ctotal=-1; //coût infini
 				}

@@ -6,6 +6,7 @@ public class Arete {
 	private int cap; //capacité
 	private int priorite[]; //priorité des joueurs
 	private int nbjoueurs; //nb de joueurs qui empruntent cette arête
+	private int surcharge; //nb de joueurs qui empruntent cette arête
 	private Noeud nd1; //origine
 	private Noeud nd2; //destination
 	
@@ -15,8 +16,17 @@ public class Arete {
 		this.priorite = priorite;
 		this.cap = cap;
 		this.nbjoueurs=0;
+		this.surcharge=0;
 		this.nd1 = nd1;
 		this.nd2 = nd2;
+	}
+
+	public int getSurcharge() {
+		return surcharge;
+	}
+
+	public void setSurcharge(int surcharge) {
+		this.surcharge = surcharge;
 	}
 
 	public int[] getPriorite() {
