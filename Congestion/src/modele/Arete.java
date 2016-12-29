@@ -7,18 +7,43 @@ public class Arete {
 	private int priorite[]; //priorité des joueurs
 	private int nbjoueurs; //nb de joueurs qui empruntent cette arête
 	private int surcharge; //nb de joueurs qui empruntent cette arête
+	private int pris[]; //si un joueur de rang i emprunte ou non l'arête
 	private Noeud nd1; //origine
 	private Noeud nd2; //destination
 	
-	public Arete(int idr, double[] fcout,int priorite[], int cap, Noeud nd1, Noeud nd2) {
+	public Arete(int idr, double[] fcout,int priorite[], int cap, Noeud nd1, Noeud nd2,int nj) {
 		this.idr = idr;
 		this.fcout = fcout;
 		this.priorite = priorite;
 		this.cap = cap;
 		this.nbjoueurs=0;
 		this.surcharge=0;
+		this.pris=new int[nj];
+		for (int i=0; i<nj; i++) {
+			pris[i]=0;
+		}
 		this.nd1 = nd1;
 		this.nd2 = nd2;
+	}
+	
+	public Arete(Arete a) {
+		this.idr = a.idr;
+		this.fcout = a.fcout;
+		this.priorite = a.priorite;
+		this.cap = a.cap;
+		this.nbjoueurs=a.nbjoueurs;
+		this.surcharge=a.surcharge;
+		this.pris=a.pris;
+		this.nd1 = a.nd1;
+		this.nd2 = a.nd2;
+	}
+	
+	public int[] getPris() {
+		return pris;
+	}
+
+	public void setPris(int a,int b) {
+		this.pris[a] = b;
 	}
 
 	public int getSurcharge() {
@@ -93,11 +118,23 @@ public class Arete {
 		this.nd2 = nd2;
 	}
 	
-	public void jincrement() {
-		this.nbjoueurs++;
+	public void jincrement(int i) { //joueur i
+		int j=priorite[i];
+		pris[j-1]=1;
+		if (nbjoueurs<cap) {
+			nbjoueurs++;
+		} else {
+			surcharge++;
+		}
 	}
 	
-	public void jdecrement() {
-		this.nbjoueurs--;
+	public void jdecrement(int i) {
+		int j=priorite[i];
+		pris[j-1]=0;
+		if (surcharge>0) {
+			surcharge--;
+		} else {
+			nbjoueurs--;
+		}
 	}
 }
