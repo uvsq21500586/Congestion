@@ -9,11 +9,12 @@ import java.util.StringTokenizer;
 import modele.Arete;
 import modele.Arete2;
 import modele.Joueur;
+import modele.Joueur2;
 
 public class SingletonCapacitedGameBuilder {
 	
 	private int nombreJoueurs;
-	private Joueur[] joueurs;
+	private Joueur2[] joueurs;
 	private ArrayList<Arete2> aretes;
 
 	public SingletonCapacitedGameBuilder(String file) throws IOException {
@@ -52,9 +53,9 @@ public class SingletonCapacitedGameBuilder {
 		entree.close();
 		
 		// Initialisation des joueurs
-		joueurs = new Joueur[nombreJoueurs];
+		joueurs = new Joueur2[nombreJoueurs];
 		for(int i = 0; i < nombreJoueurs; i++)
-			joueurs[i] = new Joueur(i+1);
+			joueurs[i] = new Joueur2(i+1);
 	}
 	
 	public static void main(String[] Args) {
@@ -63,6 +64,25 @@ public class SingletonCapacitedGameBuilder {
 			s = new SingletonCapacitedGameBuilder("H");
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+		
+		//initialisation des joueurs (on les attribue au premier chemin non saturé
+		Arete2 a;
+		int num=0;
+		int Str[]= new int[s.nombreJoueurs];
+		for (int i=0; i<s.nombreJoueurs;i++) {
+			s.joueurs[i]=new Joueur2(i+1);
+			Str[i]=num;
+			s.aretes.get(Str[i]).jincrement(i);
+			a=s.aretes.get(Str[i]);
+			if (a.getNbjoueurs()==a.getCap()) {
+				num++;
+			}
+						
+			for (int k=0; k<s.aretes.size(); k++) {
+				System.out.print(s.aretes.get(k).getNbjoueurs()+" ");
+			}
+			System.out.println();
 		}
 		System.out.println("Succès" + s);
 	}
