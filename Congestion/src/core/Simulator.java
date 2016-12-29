@@ -93,6 +93,7 @@ public class Simulator {
 		for (int i=0;i<Njoueurs;i++) {
 			System.out.println("Joueur "+(i+1)+": cout="+cout[i]);
 		}
+		System.out.println("fin");
 	}
 
 }
