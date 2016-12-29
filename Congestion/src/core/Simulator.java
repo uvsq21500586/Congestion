@@ -58,16 +58,20 @@ public class Simulator {
 		Joueur J[]=new Joueur[Njoueurs];
 		int Str[]= new int[Njoueurs]; //Chemin choisi par le joueur i 
 		
-		//initialisation des joueurs (on les attribue au premier chemin
+		//initialisation des joueurs (on les attribue au premier chemin non saturé
 		Arete a;
+		int num=0;
 		for (int i=0; i<Njoueurs;i++) {
 			J[i]=new Joueur(i+1);
-			Str[i]=0;
-			if (i==2) Str[i]=1;
+			Str[i]=num;
 			for (int j=0; j<S[Str[i]].getSt().size();j++) {
 				a=S[Str[i]].getSt().get(j);
 				a.jincrement(i);
+				if (a.getNbjoueurs()==a.getCap()) {
+					num++;
+				}
 				S[Str[i]].getSt().set(j, a);
+				
 			}
 			for (int k=0; k<Njoueurs; k++) {
 				System.out.print(S[0].getSt().get(0).getPris()[k]+" ");
@@ -79,21 +83,7 @@ public class Simulator {
 		double ctotal;
 		int pos;//position
 		int rg; //rang
-		/**for (int i=0;i<Njoueurs;i++) {
-			ctotal=0;
-			for (int j=0; j<S[Str[i]].getSt().size(); j++) {
-				a=S[Str[i]].getSt().get(j);
-				if (a.getCap()>=a.getPriorite2(i)) {
-					ctotal+=a.getFcout2(S[Str[i]].getSt().get(j).getNbjoueurs());
-				} else if (a.getSurcharge()==0) {
-					ctotal+=a.getFcout2(a.getNbjoueurs());
-				} else {
-					ctotal=-1; //coût infini
-				}
-			}
-			cout[i]=ctotal;
-		}*/
-		
+
 		for (int i=0;i<Njoueurs;i++) {
 			ctotal=0;
 			for (int j=0; j<S[Str[i]].getSt().size(); j++) {
@@ -111,7 +101,7 @@ public class Simulator {
 							pos++;
 						}
 					}
-					System.out.println("position joueur"+(i+1)+"="+pos);
+					//System.out.println("position joueur"+(i+1)+"="+pos);
 					if (pos<=a.getCap()) {
 						ctotal+=a.getFcout2(a.getNbjoueurs());
 					} else {
@@ -124,7 +114,7 @@ public class Simulator {
 		}
 		
 		for (int i=0;i<Njoueurs;i++) {
-			System.out.println("Joueur "+(i+1)+": cout="+cout[i]);
+			System.out.println("Joueur "+(i+1)+": cout="+cout[i] + "; chemin="+Str[i]);
 		}
 		System.out.println("fin");
 	}
