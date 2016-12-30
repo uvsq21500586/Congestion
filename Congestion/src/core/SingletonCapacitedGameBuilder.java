@@ -85,5 +85,9 @@ public class SingletonCapacitedGameBuilder {
 			System.out.println();
 		}
 		System.out.println("Succès" + s);
+	
+		for (int i=0;i<s.nombreJoueurs; i++) {
+			System.out.println("Joueur"+(i+1)+":route"+Str[i]);
+		}
 	}
 }
