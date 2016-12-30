@@ -7,15 +7,13 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import modele.Arete;
-import modele.Arete2;
 import modele.Joueur;
-import modele.Joueur2;
 
 public class SingletonCapacitedGameBuilder {
 	
 	private int nombreJoueurs;
-	private Joueur2[] joueurs;
-	private ArrayList<Arete2> aretes;
+	private Joueur[] joueurs;
+	private ArrayList<Arete> aretes;
 
 	public SingletonCapacitedGameBuilder(String file) throws IOException {
 		String nomfichier = file;
@@ -28,7 +26,6 @@ public class SingletonCapacitedGameBuilder {
 		nombreJoueurs = Integer.parseInt((tok.nextToken()));
 		
 		// Chaque arete est composé de 3 lignes
-		int j=0;
 		while ((LigneLue = entree.readLine()) != null) {
 			
 			// Première ligne (capacité)
@@ -48,42 +45,23 @@ public class SingletonCapacitedGameBuilder {
 			for(int i = 0; i < nombreJoueurs; i++)
 				priorites[i] = Integer.parseInt(tok.nextToken());
 			
-			aretes.add(new Arete2(j,couts, priorites, cap,nombreJoueurs));
+			aretes.add(new Arete(cap, couts, priorites));
 		}
 		entree.close();
 		
 		// Initialisation des joueurs
-		joueurs = new Joueur2[nombreJoueurs];
+		joueurs = new Joueur[nombreJoueurs];
 		for(int i = 0; i < nombreJoueurs; i++)
-			joueurs[i] = new Joueur2(i+1);
+			joueurs[i] = new Joueur(i+1);
 	}
 	
 	public static void main(String[] Args) {
+		@SuppressWarnings("unused")
 		SingletonCapacitedGameBuilder s = null;
 		try {
 			s = new SingletonCapacitedGameBuilder("H");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		//initialisation des joueurs (on les attribue au premier chemin non saturé
-		Arete2 a;
-		int num=0;
-		int Str[]= new int[s.nombreJoueurs];
-		for (int i=0; i<s.nombreJoueurs;i++) {
-			s.joueurs[i]=new Joueur2(i+1);
-			Str[i]=num;
-			s.aretes.get(Str[i]).jincrement(i);
-			a=s.aretes.get(Str[i]);
-			if (a.getNbjoueurs()==a.getCap()) {
-				num++;
-			}
-						
-			for (int k=0; k<s.aretes.size(); k++) {
-				System.out.print(s.aretes.get(k).getNbjoueurs()+" ");
-			}
-			System.out.println();
-		}
-		System.out.println("Succès" + s);
 	}
 }

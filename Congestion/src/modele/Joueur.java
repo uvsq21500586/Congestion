@@ -1,8 +1,8 @@
 package modele;
 
-public class Joueur {
+public class Joueur{
 	private int id;
-	private Strategie strategie;
+	private Arete strategie;
 	
 	
 	public Joueur(int id) {
@@ -17,10 +17,10 @@ public class Joueur {
 		this.id = id;
 	}
 	
-	public Strategie getStrategie() {
+	public Arete getStrategie() {
 		return strategie;
 	}
-	public void setStrategie(Strategie strategie) {
+	public void setStrategie(Arete strategie) {
 		this.strategie = strategie;
 	}
 }
