@@ -8,6 +8,7 @@ public class Arete2 {
 	private int nbjoueurs; //nb de joueurs qui empruntent cette arête
 	private int surcharge; //nb de joueurs qui empruntent cette arête
 	private int pris[]; //si un joueur de rang i emprunte ou non l'arête
+	private int nr;
 	
 	public Arete2(int idr, double[] fcout,int priorite[], int cap,int nj) {
 		this.idr = idr;
@@ -20,6 +21,7 @@ public class Arete2 {
 		for (int i=0; i<nj; i++) {
 			pris[i]=0;
 		}
+		this.nr=0;
 	}
 	
 	public Arete2(Arete2 a) {
@@ -30,8 +32,21 @@ public class Arete2 {
 		this.nbjoueurs=a.nbjoueurs;
 		this.surcharge=a.surcharge;
 		this.pris=a.pris;
+		this.nr=a.nr;
 	}
 	
+	public int getNr() {
+		return nr;
+	}
+
+	public void setNr(int nr) {
+		this.nr = nr;
+	}
+
+	public void setPris(int[] pris) {
+		this.pris = pris;
+	}
+
 	public int[] getPris() {
 		return pris;
 	}
@@ -73,7 +88,10 @@ public class Arete2 {
 	}
 
 	public double getFcout2(int i) {
-		return fcout[i-1];
+		if (i>0) {
+			return fcout[i-1];
+		}
+		return 100; //grande valeur
 	}
 	
 	public void setFcout(double[] fcout) {

@@ -6,16 +6,46 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import modele.Arete;
 import modele.Arete2;
-import modele.Joueur;
 import modele.Joueur2;
+
+
 
 public class SingletonCapacitedGameBuilder {
 	
 	private int nombreJoueurs;
 	private Joueur2[] joueurs;
 	private ArrayList<Arete2> aretes;
+	
+	//fonction min
+	public int min(int a,int b){
+		if (a>b) {
+			return a;
+		}
+		return b;
+	}
+	
+	public double[] tridouble(double a[],int n){
+		double[] b = new double[n];
+		int j,k;
+		for (int i=0;i<n;i++) {
+			if (i==0) b[0]=a[0];
+			else {
+				j=0;
+				while (j<i && a[i]>b[j]) {
+					j++;
+				}
+				if (j==i) b[j]=a[i];
+				else {
+					for (k=i;k>j;k--) {
+						b[k]=b[k-1];
+					}
+					b[j]=a[i];
+				}
+			}
+		}
+		return b;
+	}
 
 	public SingletonCapacitedGameBuilder(String file) throws IOException {
 		String nomfichier = file;
@@ -59,6 +89,7 @@ public class SingletonCapacitedGameBuilder {
 	}
 	
 	public static void main(String[] Args) {
+		int time=10; //nb d'itérations pour la boucle while (etapes 3-7)
 		SingletonCapacitedGameBuilder s = null;
 		try {
 			s = new SingletonCapacitedGameBuilder("H");
@@ -85,9 +116,65 @@ public class SingletonCapacitedGameBuilder {
 			System.out.println();
 		}
 		System.out.println("Succès" + s);
-	
-		for (int i=0;i<s.nombreJoueurs; i++) {
-			System.out.println("Joueur"+(i+1)+":route"+Str[i]);
+		
+		int n2; //n2=^n
+		int k=0; //k=somme des kr
+		for (int i=0;i<s.aretes.size(); i++){
+			k=k+s.aretes.get(i).getCap();
+		}
+		int j;
+		boolean bol=false;
+		//etape 2
+		n2=s.min(s.nombreJoueurs,k);
+		int temps=0;
+		System.out.println("n="+s.nombreJoueurs+"; n2="+n2+"; k="+k);
+		//etapes 3-7
+		Arete2 a2;
+		while (n2>0 && temps<time) {
+			//etape 4
+			a=null;
+			for (j=0;j<s.aretes.size();j++) {
+				a2=s.aretes.get(j);
+				if (a2.getNr()<a2.getCap() && a2.getCap()<=s.min(a2.getNr()+n2,a2.getCap())) {
+					if (a==null || a.getFcout2(a.getCap())>a2.getFcout2(a2.getCap())) {
+						a=a2;
+					}
+				}
+			}
+			if (a!=null) {
+				//etape 5
+				n2=n2-(a.getCap()-a.getNr());
+				System.out.println("n2="+n2);
+				
+				//etape 6
+				a.setNr(a.getCap());
+			}
+			temps++;
+		}
+		
+		if (n2>0) {
+			System.out.println("Erreur equilibre de Nash non trouve");
+		} else {
+			double[] tabdelay=new double[s.aretes.size()]; //tableau des fonctions des dr(nr) de chaque arete
+			for (int i=0;i<s.aretes.size(); i++) {
+				a=s.aretes.get(i);
+				tabdelay[i]=a.getFcout2(a.getNr());
+				System.out.print("arete"+(i+1)+":"+tabdelay[i]+"; ");
+			}
+			System.out.println();
+			
+			//etape 8 tri du tableau tabdelay
+			tabdelay=s.tridouble(tabdelay, s.aretes.size());
+			for (int i=0;i<s.aretes.size(); i++) {
+				System.out.print("arete"+(i+1)+":"+tabdelay[i]+"; ");
+			}
+			System.out.println();
+			
+			
+			
+			for (int i=0;i<s.nombreJoueurs; i++) {
+				System.out.println("Joueur"+(i+1)+":route"+Str[i]);
+			}
 		}
 	}
 }
