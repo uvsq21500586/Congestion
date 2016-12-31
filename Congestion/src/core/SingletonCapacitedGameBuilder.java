@@ -154,7 +154,7 @@ public class SingletonCapacitedGameBuilder {
 					}
 					k++;
 				}
-				if (a2.getNr()<k2 && k2<s.min(a2.getNr()+n2,a2.getCap())){
+				if (a2.getNr()<k2 && k2<=s.min(a2.getNr()+n2,a2.getCap())){
 					a=a2;
 				}
 				j++;
