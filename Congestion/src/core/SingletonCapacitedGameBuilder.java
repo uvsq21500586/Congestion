@@ -25,27 +25,6 @@ public class SingletonCapacitedGameBuilder {
 		return b;
 	}
 	
-	public double[] tridouble(double a[],int n){
-		double[] b = new double[n];
-		int j,k;
-		for (int i=0;i<n;i++) {
-			if (i==0) b[0]=a[0];
-			else {
-				j=0;
-				while (j<i && a[i]>b[j]) {
-					j++;
-				}
-				if (j==i) b[j]=a[i];
-				else {
-					for (k=i;k>j;k--) {
-						b[k]=b[k-1];
-					}
-					b[j]=a[i];
-				}
-			}
-		}
-		return b;
-	}
 
 	public SingletonCapacitedGameBuilder(String file) throws IOException {
 		String nomfichier = file;
@@ -164,9 +143,32 @@ public class SingletonCapacitedGameBuilder {
 			System.out.println();
 			
 			//etape 8 tri du tableau tabdelay
-			tabdelay=s.tridouble(tabdelay, s.aretes.size());
+			double[] tabdelay2=new double[s.aretes.size()]; //clone
+			int[] tabindice=new int[s.aretes.size()]; //table des indices des aretes
+			for (int i=0;i<s.aretes.size();i++) {
+				if (i==0) {
+					tabdelay2[0]=tabdelay[0];
+					tabindice[0]=0;
+				}
+				else {
+					j=0;
+					while (j<i && tabdelay[i]>tabdelay2[j]) {
+						j++;
+					}
+					if (j==i) tabdelay2[j]=tabdelay[i];
+					else {
+						for (k=i;k>j;k--) {
+							tabdelay2[k]=tabdelay2[k-1];
+							tabindice[k]=tabindice[k-1];
+						}
+						tabdelay2[j]=tabdelay[i];
+						tabindice[j]=i;
+					}
+				}
+			}
+			tabdelay=tabdelay2;
 			for (int i=0;i<s.aretes.size(); i++) {
-				System.out.print("arete"+(i+1)+":"+tabdelay[i]+"; ");
+				System.out.print("arete"+tabindice[i]+":"+tabdelay[i]+"; ");
 			}
 			System.out.println();
 			
