@@ -172,8 +172,29 @@ public class SingletonCapacitedGameBuilder {
 			}
 			System.out.println();
 			
-			
-			
+			//etape 9: attribuer les joueurs aux aretes
+			int[] joueursrestants = new int[s.nombreJoueurs]; //joueurs non classés
+			for (int i=0;i<s.nombreJoueurs; i++) {
+				joueursrestants[i]=1;
+			}
+			int N=s.nombreJoueurs;
+			int j2,k2;
+			for (int i=0;i<s.aretes.size(); i++) {
+				k=0;
+				k2=0;
+				a=s.aretes.get(i);
+				while (k<a.getNr() && N>0){
+					j2=a.getPriorite2(k2)-1;
+					if (joueursrestants[j2]>0) {
+						Str[j2]=tabindice[i];
+						k++;
+						joueursrestants[j2]=0;
+						N--;
+					}
+					k2++;
+				}
+			}
+			N=0;
 			for (int i=0;i<s.nombreJoueurs; i++) {
 				System.out.println("Joueur"+(i+1)+":route"+Str[i]);
 			}
