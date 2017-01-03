@@ -68,7 +68,6 @@ public class SingletonCapacitedGameBuilder {
 	}
 	
 	public static void main(String[] Args) {
-		int time=100; //nb d'itérations pour la boucle while (etapes 3-7)
 		SingletonCapacitedGameBuilder s = null;
 		try {
 			s = new SingletonCapacitedGameBuilder("H");
@@ -78,22 +77,7 @@ public class SingletonCapacitedGameBuilder {
 		
 		//initialisation des joueurs (on les attribue au premier chemin non saturé
 		Arete2 a;
-		int num=0;
 		int Str[]= new int[s.nombreJoueurs];
-		for (int i=0; i<s.nombreJoueurs;i++) {
-			s.joueurs[i]=new Joueur2(i+1);
-			Str[i]=num;
-			s.aretes.get(Str[i]).jincrement(i);
-			a=s.aretes.get(Str[i]);
-			if (a.getNbjoueurs()==a.getCap()) {
-				num++;
-			}
-						
-			for (int k=0; k<s.aretes.size(); k++) {
-				System.out.print(s.aretes.get(k).getNbjoueurs()+" ");
-			}
-			System.out.println();
-		}
 		System.out.println("Succès" + s);
 		
 		int n2; //n2=^n
@@ -109,16 +93,23 @@ public class SingletonCapacitedGameBuilder {
 		System.out.println("n="+s.nombreJoueurs+"; n2="+n2+"; k="+k);
 		//etapes 3-7
 		Arete2 a2;
-		double couti;
+		double couti,couti2;
+		couti=0;
 		int k2=0;
 		a=s.aretes.get(0);
+		couti2=-1;
 		while (n2>0 && a!=null) {
 			//etape 4
 			a=null;
-			/*for (j=0;j<s.aretes.size();j++) {
+			j=0;
+			indicearete=0;
+			couti2=Double.MAX_VALUE;
+			while (j<s.aretes.size()) {
 				a2=s.aretes.get(j);
-				if (a2.getNr()<s.min(a2.getNr()+n2,a2.getCap())){
-					k=a2.getNr()+1;
+				//if (a2.getNr()<s.min(a2.getNr()+n2,a2.getCap()))
+				//a=a2;
+				k=a2.getNr()+1;
+				if (k<=s.min(a2.getNr()+n2,a2.getCap())){
 					couti=a2.getFcout2(k);
 					k2=k;
 					while (k<=s.min(a2.getNr()+n2,a2.getCap())) {
@@ -128,46 +119,23 @@ public class SingletonCapacitedGameBuilder {
 						}
 						k++;
 					}
-				}
-				
-				
-				if (a2.getNr()<a2.getCap() && a2.getCap()<=s.min(a2.getNr()+n2,a2.getCap())) {
-					if (a==null || a.getFcout2(a.getCap())>a2.getFcout2(a2.getCap())) {
-						a=a2;
-						indicearete=j;
+
+					if (couti<couti2 && k2>a2.getNr()){
+						a=a2;//mise à jour de l'arete à remplir
+						couti2=couti; //mise à jour du cout minimum
+						indicearete=j; //mise à jour de l'indice de l'arete
 					}
-				}
-			}*/
-			
-			j=0;
-			while (j<s.aretes.size() && a==null) {
-				a2=s.aretes.get(j);
-				//if (a2.getNr()<s.min(a2.getNr()+n2,a2.getCap()))
-				//a=a2;
-				k=0;
-				couti=a2.getFcout2(k);
-				k2=k;
-				while (k<=s.min(a2.getNr()+n2,a2.getCap())) {
-					if (a2.getFcout2(k)<couti) {
-						k2=k;
-						couti=a2.getFcout2(k);
-					}
-					k++;
-				}
-				if (a2.getNr()<k2 && k2<=s.min(a2.getNr()+n2,a2.getCap())){
-					a=a2;
 				}
 				j++;
 			}
 			if (a!=null) {
-				j--;
 				//etape 5
 				n2=n2-(k2-a.getNr());
 				
 				//etape 6
-				s.aretes.get(j).setNr(k2);
+				s.aretes.get(indicearete).setNr(k2);
 				//a.setNr(a.getCap());
-				System.out.println("n2="+n2+"; route"+j+": nr="+s.aretes.get(j).getNr());
+				System.out.println("n2="+n2+"; route"+indicearete+": nr="+s.aretes.get(indicearete).getNr());
 			}
 			temps++;
 		}
@@ -196,7 +164,10 @@ public class SingletonCapacitedGameBuilder {
 					while (j<i && tabdelay[i]>tabdelay2[j]) {
 						j++;
 					}
-					if (j==i) tabdelay2[j]=tabdelay[i];
+					if (j==i) {
+						tabdelay2[j]=tabdelay[i];
+						tabindice[j]=i;
+					}
 					else {
 						for (k=i;k>j;k--) {
 							tabdelay2[k]=tabdelay2[k-1];
@@ -209,7 +180,7 @@ public class SingletonCapacitedGameBuilder {
 			}
 			tabdelay=tabdelay2;
 			for (int i=0;i<s.aretes.size(); i++) {
-				System.out.print("arete"+tabindice[i]+":"+tabdelay[i]+"; ");
+				System.out.print("arete"+tabindice[i]+":"+tabdelay[i]+" nr="+s.aretes.get(tabindice[i]).getNr()+"; ");
 			}
 			System.out.println();
 			
@@ -218,28 +189,31 @@ public class SingletonCapacitedGameBuilder {
 			for (int i=0;i<s.nombreJoueurs; i++) {
 				joueursrestants[i]=1;
 			}
-			int N=s.nombreJoueurs;
-			int j2;
-			for (int i=0;i<s.aretes.size(); i++) {
-				k=0;
-				k2=0;
-				a=s.aretes.get(i);
+			int N=s.nombreJoueurs; //nombre de joueurs restants
+			int j2; //indice d'un joueur
+			j=0;
+			while (N>0) { //on continue tant que les joueurs ne sont pas tous classés
+				k=0; //compteur de joueurs attribués à l'arete
+				k2=0;//k2 balaiera le tableau des priorités de l'arete
+				a=s.aretes.get(tabindice[j]);
 				while (k<a.getNr() && N>0){
 					j2=a.getPriorite2(k2)-1;
 					if (joueursrestants[j2]>0) {
-						Str[j2]=tabindice[i];
+						Str[j2]=tabindice[j];
 						k++;
 						joueursrestants[j2]=0;
 						N--;
 					}
 					k2++;
 				}
+				j++;
 			}
-			N=0;
+			
 			
 			//etape 14: output NE
 			for (int i=0;i<s.nombreJoueurs; i++) {
-				System.out.println("Joueur"+(i+1)+":route"+Str[i]);
+				a=s.aretes.get(Str[i]);
+				System.out.println("Joueur"+(i+1)+":route"+Str[i]+"; cout="+a.getFcout2(a.getNr()));
 			}
 		}
 	}

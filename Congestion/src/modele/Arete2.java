@@ -91,7 +91,7 @@ public class Arete2 {
 		if (i>0) {
 			return fcout[i-1];
 		}
-		return 100; //grande valeur
+		return Double.MAX_VALUE; //grande valeur
 	}
 	
 	public void setFcout(double[] fcout) {
