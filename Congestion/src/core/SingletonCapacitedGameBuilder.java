@@ -70,7 +70,7 @@ public class SingletonCapacitedGameBuilder {
 	public static void main(String[] Args) {
 		SingletonCapacitedGameBuilder s = null;
 		try {
-			s = new SingletonCapacitedGameBuilder("H");
+			s = new SingletonCapacitedGameBuilder("H2G2");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -96,6 +96,7 @@ public class SingletonCapacitedGameBuilder {
 		double couti,couti2;
 		couti=0;
 		int k2=0;
+		int k3=0;
 		a=s.aretes.get(0);
 		couti2=-1;
 		while (n2>0 && a!=null) {
@@ -111,17 +112,18 @@ public class SingletonCapacitedGameBuilder {
 				k=a2.getNr()+1;
 				if (k<=s.min(a2.getNr()+n2,a2.getCap())){
 					couti=a2.getFcout2(k);
-					k2=k;
+					k3=k;
 					while (k<=s.min(a2.getNr()+n2,a2.getCap())) {
 						if (a2.getFcout2(k)<couti) {
-							k2=k;
+							k3=k;
 							couti=a2.getFcout2(k);
 						}
 						k++;
 					}
 
-					if (couti<couti2 && k2>a2.getNr()){
+					if (couti<couti2 && k3>a2.getNr()){
 						a=a2;//mise à jour de l'arete à remplir
+						k2=k3;
 						couti2=couti; //mise à jour du cout minimum
 						indicearete=j; //mise à jour de l'indice de l'arete
 					}
