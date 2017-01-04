@@ -70,7 +70,7 @@ public class SingletonCapacitedGameBuilder {
 	public static void main(String[] Args) {
 		SingletonCapacitedGameBuilder s = null;
 		try {
-			s = new SingletonCapacitedGameBuilder("H2G2");
+			s = new SingletonCapacitedGameBuilder("H3.txt");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -85,6 +85,7 @@ public class SingletonCapacitedGameBuilder {
 		for (int i=0;i<s.aretes.size(); i++){
 			k=k+s.aretes.get(i).getCap();
 		}
+		int Sommecap=k;
 		int j;
 		//etape 2
 		n2=s.min(s.nombreJoueurs,k);
@@ -105,6 +106,7 @@ public class SingletonCapacitedGameBuilder {
 			j=0;
 			indicearete=0;
 			couti2=Double.MAX_VALUE;
+			k2=0;
 			while (j<s.aretes.size()) {
 				a2=s.aretes.get(j);
 				//if (a2.getNr()<s.min(a2.getNr()+n2,a2.getCap()))
@@ -113,6 +115,7 @@ public class SingletonCapacitedGameBuilder {
 				if (k<=s.min(a2.getNr()+n2,a2.getCap())){
 					couti=a2.getFcout2(k);
 					k3=k;
+					if (k2==0) k2=k;
 					while (k<=s.min(a2.getNr()+n2,a2.getCap())) {
 						if (a2.getFcout2(k)<couti) {
 							k3=k;
@@ -194,7 +197,7 @@ public class SingletonCapacitedGameBuilder {
 			int N=s.nombreJoueurs; //nombre de joueurs restants
 			int j2; //indice d'un joueur
 			j=0;
-			while (N>0) { //on continue tant que les joueurs ne sont pas tous classés
+			while (N>(s.nombreJoueurs-Sommecap) && N>0) { //on continue tant que les joueurs ne sont pas tous classés
 				k=0; //compteur de joueurs attribués à l'arete
 				k2=0;//k2 balaiera le tableau des priorités de l'arete
 				a=s.aretes.get(tabindice[j]);
@@ -215,7 +218,11 @@ public class SingletonCapacitedGameBuilder {
 			//etape 14: output NE
 			for (int i=0;i<s.nombreJoueurs; i++) {
 				a=s.aretes.get(Str[i]);
-				System.out.println("Joueur"+(i+1)+":route"+Str[i]+"; cout="+a.getFcout2(a.getNr()));
+				if (joueursrestants[i]==0) {
+					System.out.println("Joueur"+(i+1)+":route"+Str[i]+"; cout="+a.getFcout2(a.getNr()));
+				} else {
+					System.out.println("Joueur"+(i+1)+":route"+Str[i]+"; cout=infini");
+				}
 			}
 		}
 	}
