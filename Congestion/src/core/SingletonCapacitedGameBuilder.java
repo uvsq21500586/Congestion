@@ -77,7 +77,7 @@ public class SingletonCapacitedGameBuilder {
 		
 		//initialisation des joueurs (on les attribue au premier chemin non saturé
 		Arete2 a;
-		int Str[]= new int[s.nombreJoueurs];
+		int Str[]= new int[s.nombreJoueurs]; //stratégies des joueurs
 		System.out.println("Succès" + s);
 		
 		int n2; //n2=^n

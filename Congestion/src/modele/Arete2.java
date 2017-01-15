@@ -116,7 +116,7 @@ public class Arete2 {
 
 
 	public void jincrement(int i) { //joueur i
-		int j=priorite[i];
+		int j=priorite[i-1];
 		pris[j-1]=1;
 		if (nbjoueurs<cap) {
 			nbjoueurs++;
@@ -126,7 +126,7 @@ public class Arete2 {
 	}
 	
 	public void jdecrement(int i) {
-		int j=priorite[i];
+		int j=priorite[i-1];
 		pris[j-1]=0;
 		if (surcharge>0) {
 			surcharge--;
